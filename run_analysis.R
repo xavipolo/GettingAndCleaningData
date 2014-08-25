@@ -16,6 +16,13 @@ feature_column_id <- paste("V",dfe$V1,sep="") # get id columns like V1,V3, etc..
 # ACTIVITY NAMES
 dan <- read.table("./UCI HAR Dataset/activity_labels.txt")
 
+# SUBJECT DATA
+ds1 <- read.table("./UCI HAR Dataset/test/subject_test.txt")
+ds2 <- read.table("./UCI HAR Dataset/train/subject_train.txt")
+dst <- rbind(ds1,ds2) # merge test and train data
+dst$ID <- rownames(dst) #add rowname as ID column
+names(dst)[names(dst)=="V1"] <- "SUBJECT" #change name of column to SUBJECT
+
 # ACTIVITY DATA
 dy1 <- read.table("./UCI HAR Dataset/test/y_test.txt")
 dy2 <- read.table("./UCI HAR Dataset/train/y_train.txt")
@@ -35,10 +42,12 @@ dxt<- dxt[,feature_column_id]
 colnames(dxt) <- dfe$V2 #rename columns to descriptions
 dxt$ID <- rownames(dxt) #add rowname as ID column
 
-dt <- join(dxt,dyt,by="ID")
-names(dt)[names(dt)=="V2"] <- "ACTIVITY" #change name of column to ACTIVITY
+dt <- join(join(dxt,dyt,by="ID"),dst,by="ID")
+
 
 #DT HAS ALL THE DATA
 
 #STEP 5 
 #Creates a second, independent tidy data set with the average of each variable for each activity and each subject
+
+

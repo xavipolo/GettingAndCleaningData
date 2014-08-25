@@ -61,6 +61,9 @@ Source code is documented, but these are the main blocks of the process
 * Load Features
   * Filter Features to get only std and mean variables
 * Load Activity Names
+* Load Subject Data 
+  * Merge train and test data
+  * Rename columns with descriptions
 * Load Activity Data 
   * Merge train and test data
   * Join with Activity Names
@@ -69,4 +72,4 @@ Source code is documented, but these are the main blocks of the process
   * Merge train and test data
   * Filter data to get only std and mean variables
   * Rename columns with descriptions
-* Join Activity and Main data
+* Join Activity, Main and Subject data
