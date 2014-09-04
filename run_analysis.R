@@ -45,18 +45,10 @@ dxt$ID <- rownames(dxt) #add rowname as ID column
 dt <- join(join(dxt,dyt,by="ID"),dst,by="ID")
 #DT HAS ALL THE DATA
 
+
 #STEP 5 
 #Creates a second, independent tidy data set with the average of each variable for each activity and each subject
-for ( activity in dan$V2) {
-  for ( subject in unique(dst$SUBJECT) ) {
-    tmp <- dt[dt$ACTIVITY == activity & dt$SUBJECT == subject,]
-    #apply(tmp[,(1:66)],2,mean)
-    tmp <- colMeans(x=tmp[,(1:66)])
-    tmp$SUBJECT <- subject
-    tmp$ACTIVITY <- activity
-    if (exists("ft")) ft <- rbind(ft,tmp)
-    else ft <-tmp
-  }
-  
-}
+ft <- ddply(dt, c("ACTIVITY","SUBJECT"), function(df) colMeans(df[,(1:66)]))
 write.table(ft, row.name=FALSE, file="final_table.txt")
+
+
