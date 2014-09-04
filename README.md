@@ -23,5 +23,5 @@ Main blocks of process:
   * Merge train and test data
   * Filter data to get only std and mean variables
   * Rename columns with descriptions
-* Join Activity, Main and Subject data
-* Generate mean table
+* Join all the data
+* Generate average table
