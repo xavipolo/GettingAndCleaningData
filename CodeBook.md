@@ -31,23 +31,23 @@ Finally a Fast Fourier Transform (FFT) was applied to some of these signals prod
 These signals were used to estimate variables of the feature vector for each pattern:  
 '-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
 
-* tBodyAcc-XYZ
-* tGravityAcc-XYZ
-* tBodyAccJerk-XYZ
-* tBodyGyro-XYZ
-* tBodyGyroJerk-XYZ
-* tBodyAccMag
-* tGravityAccMag
-* tBodyAccJerkMag
-* tBodyGyroMag
-* tBodyGyroJerkMag
-* fBodyAcc-XYZ
-* fBodyAccJerk-XYZ
-* fBodyGyro-XYZ
-* fBodyAccMag
-* fBodyAccJerkMag
-* fBodyGyroMag
-* fBodyGyroJerkMag
+* tBodyAcc-XYZ : Body acceleration signal
+* tGravityAcc-XYZ : Gravity acceleration signal
+* tBodyAccJerk-XYZ : Body linear acceleration Jerk signals
+* tBodyGyro-XYZ : Angular velocity
+* tBodyGyroJerk-XYZ : Angular velocity Jerk signals
+* tBodyAccMag : Magnitude of body acceleration, calculated using the Euclidean norm
+* tGravityAccMag : Magnitude of gravity acceleration, calculated using the Euclidean norm
+* tBodyAccJerkMag : Magnitude of body linear acceleration Jerk signals, calculated using the Euclidean norm
+* tBodyGyroMag : Magnitude of angular velocity, calculated using the Euclidean norm
+* tBodyGyroJerkMag : Magnitude of angular velocity Jerk signals, calculated using the Euclidean norm
+* fBodyAcc-XYZ : Fast Fourier Transform applied to tBodyAcc-XYZ
+* fBodyAccJerk-XYZ : Fast Fourier Transform applied to tBodyAccJerk-XYZ
+* fBodyGyro-XYZ : Fast Fourier Transform applied to tBodyGyro-XYZ
+* fBodyAccMag : Fast Fourier Transform applied to tBodyAccMag
+* fBodyAccJerkMag : Fast Fourier Transform applied to tBodyAccJerkMag
+* fBodyGyroMag : Fast Fourier Transform applied to tBodyGyroMag
+* fBodyGyroJerkMag : Fast Fourier Transform applied to tBodyGyroJerkMag
 
 The set of variables that were estimated from these signals are: 
 
@@ -58,18 +58,24 @@ The set of variables that were estimated from these signals are:
 
 Source code is documented, but these are the main blocks of the process
 
-* Load Features
-  * Filter Features to get only std and mean variables
+* Load Features 
+  * From features.txt file
+  * Filter Features to get only std and mean variables using grepl looking for "std()" or "mean()" text
 * Load Activity Names
+  * From activity_labels.txt file
 * Load Subject Data 
-  * Merge train and test data
-  * Rename columns with descriptions
+  * Merge train (subject_train.txt) and test (subject_test.txt) data, with rbind
+  * Rename column V1 to SUBJECT
 * Load Activity Data 
-  * Merge train and test data
-  * Join with Activity Names
-  * Rename columns with descriptions
+  * Merge train (y_train.txt) and test (y_test.txt) data, with rbind
+  * Join with Activity Names, using V1 as common field
+  * Rename column V2 to ACTIVITY
 * Load Main Data 
-  * Merge train and test data
+  * Merge train (X_train.txt) and test (X_test.txt) data, with rbind
   * Filter data to get only std and mean variables
   * Rename columns with descriptions
-* Join Activity, Main and Subject data
+* Join all the data by common field (ID)
+* Generate average table
+  * Calculate mean for each clomun with colMean function (rows from 1 to 66)
+  * Repeat this for every case of "ACTIVITY" and "SUBJECT" using ddply function
+  * Write the data to file using write.table
